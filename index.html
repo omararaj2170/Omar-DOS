@@ -1,0 +1,1282 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>OmarDOS</title>
+
+<!-- js-dos -->
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/js-dos@8.3.8/dist/js-dos.css"
+>
+
+<script src="https://cdn.jsdelivr.net/npm/js-dos@8.3.8/dist/js-dos.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    color: #eee;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    overflow: hidden;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    height: 58px;
+    background: #090909;
+    border-bottom: 2px solid #333;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+
+    user-select: none;
+}
+
+.logo {
+    color: #00ff66;
+    font-family: "Courier New", monospace;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #777;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.main {
+    display: flex;
+
+    width: 100%;
+    height: calc(100vh - 58px);
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    width: 270px;
+    min-width: 270px;
+
+    background: #171717;
+    border-right: 1px solid #333;
+
+    overflow-y: auto;
+
+    padding: 15px;
+}
+
+.section-title {
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+
+    color: #888;
+
+    margin-top: 10px;
+    margin-bottom: 8px;
+
+    text-transform: uppercase;
+}
+
+.menu-button {
+    width: 100%;
+
+    background: #222;
+    color: #eee;
+
+    border: 1px solid #3a3a3a;
+
+    border-radius: 5px;
+
+    padding: 11px;
+
+    margin-bottom: 7px;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    font-size: 14px;
+}
+
+.menu-button:hover {
+    background: #2d2d2d;
+    border-color: #555;
+}
+
+.menu-button:active {
+    background: #181818;
+}
+
+.special {
+    color: #00ff66;
+}
+
+.windows {
+    color: #66aaff;
+}
+
+.game-button {
+    display: block;
+
+    width: 100%;
+
+    background: #202020;
+
+    color: #ddd;
+
+    border: 1px solid #333;
+
+    border-radius: 5px;
+
+    padding: 10px;
+
+    margin-bottom: 6px;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    font-size: 14px;
+}
+
+.game-button:hover {
+    background: #292929;
+    border-color: #555;
+}
+
+.game-icon {
+    width: 25px;
+    display: inline-block;
+}
+
+.no-games {
+    color: #666;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    padding: 8px 3px;
+}
+
+/* =========================================================
+   EMULATOR AREA
+   ========================================================= */
+
+.content {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #000;
+}
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.toolbar {
+    height: 45px;
+
+    background: #151515;
+
+    border-bottom: 1px solid #333;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 6px;
+}
+
+.toolbar button {
+    background: #252525;
+
+    color: #ddd;
+
+    border: 1px solid #3d3d3d;
+
+    border-radius: 4px;
+
+    padding: 7px 13px;
+
+    cursor: pointer;
+}
+
+.toolbar button:hover {
+    background: #333;
+}
+
+.toolbar .danger:hover {
+    background: #512020;
+}
+
+/* =========================================================
+   DOSBOX
+   ========================================================= */
+
+.emulator {
+    flex: 1;
+
+    position: relative;
+
+    background: #000;
+
+    min-height: 0;
+}
+
+#dosbox {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+#dosbox canvas {
+    image-rendering: pixelated;
+}
+
+/* =========================================================
+   WELCOME SCREEN
+   ========================================================= */
+
+.welcome {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    pointer-events: none;
+}
+
+.welcome-box {
+    width: min(600px, 90%);
+
+    border: 1px solid #333;
+
+    background: #111;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+.welcome-box h1 {
+    font-family: "Courier New", monospace;
+
+    color: #00ff66;
+
+    margin-top: 0;
+}
+
+.welcome-box p {
+    color: #888;
+
+    line-height: 1.6;
+}
+
+/* =========================================================
+   STATUS BAR
+   ========================================================= */
+
+.status {
+    height: 27px;
+
+    background: #080808;
+
+    border-top: 1px solid #222;
+
+    color: #777;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 12px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 10px;
+}
+
+.status-running {
+    color: #00ff66;
+}
+
+.status-warning {
+    color: #ffaa00;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .main {
+        height: auto;
+
+        min-height: calc(100vh - 58px);
+
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+
+        height: 240px;
+
+        border-right: none;
+        border-bottom: 1px solid #333;
+    }
+
+    .content {
+        height: 600px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     HEADER
+     ======================================================= -->
+
+<header class="header">
+
+    <div class="logo">
+        OMARDOS
+        <span>WEB DOS COMPUTER</span>
+    </div>
+
+</header>
+
+
+<!-- =======================================================
+     MAIN
+     ======================================================= -->
+
+<div class="main">
+
+
+    <!-- ===================================================
+         SIDEBAR
+         =================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="section-title">
+            System
+        </div>
+
+
+        <button
+            class="menu-button special"
+            id="startDos"
+        >
+            💻 Start DOSBox
+        </button>
+
+
+        <button
+            class="menu-button windows"
+            id="startWindows"
+        >
+            🪟 Windows 3.1
+        </button>
+
+
+        <div class="section-title">
+            DOS Games
+        </div>
+
+
+        <div id="gameList">
+
+            <div class="no-games">
+                Loading games...
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- ===================================================
+         CONTENT
+         =================================================== -->
+
+    <main class="content">
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <button id="fullscreen">
+                ⛶ Fullscreen
+            </button>
+
+            <button id="restart">
+                ↻ Restart
+            </button>
+
+            <button
+                id="stop"
+                class="danger"
+            >
+                ■ Stop
+            </button>
+
+        </div>
+
+
+        <!-- EMULATOR -->
+
+        <div class="emulator">
+
+            <div id="dosbox"></div>
+
+
+            <div
+                class="welcome"
+                id="welcome"
+            >
+
+                <div class="welcome-box">
+
+                    <h1>OMARDOS</h1>
+
+                    <p>
+                        Select a DOS game from the left,
+                        start DOSBox, or boot Windows 3.1.
+                    </p>
+
+                    <p>
+                        Your games are hosted from the
+                        GitHub repository.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="status">
+
+            Status:
+
+            <span
+                id="status"
+                style="margin-left:6px"
+            >
+                Waiting for program...
+            </span>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+<script>
+
+/*
+================================================================
+ OMARDOS CONFIGURATION
+================================================================
+
+ CHANGE THESE VALUES FOR YOUR GITHUB REPOSITORY.
+
+ Example:
+
+ https://omararaj2170.github.io/omardos/
+
+ If your repository is:
+
+ github.com/USERNAME/REPOSITORY
+
+ then GitHub Pages will normally be:
+
+ https://USERNAME.github.io/REPOSITORY/
+
+================================================================
+*/
+
+
+const CONFIG = {
+
+    /*
+     * Your GitHub Pages root.
+     *
+     * IMPORTANT:
+     * Change this.
+     */
+
+    BASE_URL:
+        "./",
+
+
+    /*
+     * Folder containing the games.
+     */
+
+    GAME_FOLDER:
+        "dosgames/",
+
+
+    /*
+     * Windows 3.1 folder.
+     */
+
+    WINDOWS_FOLDER:
+        "windows31/",
+
+};
+
+
+/*
+================================================================
+ GAMES
+================================================================
+
+ Add your games here.
+
+ Each game needs:
+
+     name
+     folder
+     executable
+
+ Example:
+
+ {
+     name: "DOOM",
+     folder: "doom",
+     executable: "DOOM.EXE"
+ }
+
+ The folder becomes:
+
+ dosgames/doom/
+
+ and the executable becomes:
+
+ dosgames/doom/DOOM.EXE
+
+================================================================
+*/
+
+
+const GAMES = [
+
+    {
+        name: "DOOM",
+        folder: "doom",
+        executable: "DOOM.EXE",
+        icon: "🎮"
+    },
+
+
+    {
+        name: "Wolfenstein 3D",
+        folder: "wolf3d",
+        executable: "WOLF3D.EXE",
+        icon: "🎮"
+    },
+
+
+    {
+        name: "Commander Keen",
+        folder: "keen",
+        executable: "KEEN1.EXE",
+        icon: "🎮"
+    },
+
+
+    /*
+     * Add more games below.
+     *
+     * Example:
+     *
+     * {
+     *     name: "Duke Nukem 3D",
+     *     folder: "duke3d",
+     *     executable: "DUKE3D.EXE",
+     *     icon: "🎮"
+     * },
+     */
+
+];
+
+
+/*
+================================================================
+ DOM
+================================================================
+*/
+
+
+const gameList =
+    document.getElementById("gameList");
+
+
+const dosbox =
+    document.getElementById("dosbox");
+
+
+const status =
+    document.getElementById("status");
+
+
+const welcome =
+    document.getElementById("welcome");
+
+
+let emulator = null;
+
+
+/*
+================================================================
+ STATUS
+================================================================
+*/
+
+
+function setStatus(
+    message,
+    type = "normal"
+) {
+
+    status.textContent = message;
+
+    status.className = "";
+
+    if (type === "running") {
+
+        status.classList.add(
+            "status-running"
+        );
+
+    }
+
+    if (type === "warning") {
+
+        status.classList.add(
+            "status-warning"
+        );
+
+    }
+
+}
+
+
+/*
+================================================================
+ BUILD GAME LIST
+================================================================
+*/
+
+
+function buildGameList() {
+
+    gameList.innerHTML = "";
+
+
+    if (GAMES.length === 0) {
+
+        gameList.innerHTML = `
+            <div class="no-games">
+                No games have been added yet.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    for (const game of GAMES) {
+
+        const button =
+            document.createElement("button");
+
+
+        button.className =
+            "game-button";
+
+
+        button.innerHTML = `
+
+            <span class="game-icon">
+                ${game.icon || "🎮"}
+            </span>
+
+            ${escapeHTML(game.name)}
+
+        `;
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                launchGame(game);
+
+            }
+        );
+
+
+        gameList.appendChild(button);
+
+    }
+
+}
+
+
+/*
+================================================================
+ ESCAPE HTML
+================================================================
+*/
+
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replaceAll("&", "&amp;")
+
+        .replaceAll("<", "&lt;")
+
+        .replaceAll(">", "&gt;")
+
+        .replaceAll('"', "&quot;")
+
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/*
+================================================================
+ STOP EMULATOR
+================================================================
+*/
+
+
+async function stopEmulator() {
+
+    if (!emulator) {
+        return;
+    }
+
+
+    try {
+
+        if (
+            typeof emulator.stop ===
+            "function"
+        ) {
+
+            await emulator.stop();
+
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Emulator stop:",
+            error
+        );
+
+    }
+
+
+    emulator = null;
+
+    dosbox.innerHTML = "";
+
+}
+
+
+/*
+================================================================
+ CREATE DOSBOX
+================================================================
+*/
+
+
+async function createDOSBox() {
+
+    await stopEmulator();
+
+
+    welcome.style.display = "none";
+
+
+    dosbox.innerHTML = "";
+
+
+    /*
+     * Start js-dos.
+     */
+
+    try {
+
+        emulator =
+            await Dos(dosbox);
+
+
+        return emulator;
+
+    } catch (error) {
+
+        console.error(error);
+
+        setStatus(
+            "DOSBox failed to start.",
+            "warning"
+        );
+
+        alert(
+            "DOSBox could not start.\n\n" +
+            "Check your internet connection " +
+            "and make sure the js-dos library " +
+            "is available."
+        );
+
+
+        return null;
+    }
+
+}
+
+
+/*
+================================================================
+ START NORMAL DOSBOX
+================================================================
+
+ This starts the emulator without launching
+ a game.
+
+================================================================
+*/
+
+
+async function startDOS() {
+
+    setStatus(
+        "Starting DOSBox...",
+        "warning"
+    );
+
+
+    const dos =
+        await createDOSBox();
+
+
+    if (!dos) {
+        return;
+    }
+
+
+    setStatus(
+        "DOSBox running.",
+        "running"
+    );
+
+}
+
+
+/*
+================================================================
+ LAUNCH GAME
+================================================================
+
+ This launches a specific DOS executable.
+
+================================================================
+*/
+
+
+async function launchGame(game) {
+
+    if (!game) {
+        return;
+    }
+
+
+    setStatus(
+        "Starting " + game.name + "...",
+        "warning"
+    );
+
+
+    /*
+     * Build the game URL.
+     */
+
+    const gameURL =
+        CONFIG.BASE_URL +
+        CONFIG.GAME_FOLDER +
+        game.folder +
+        "/";
+
+
+    console.log(
+        "Game folder:",
+        gameURL
+    );
+
+
+    /*
+     * Stop previous emulator.
+     */
+
+    await stopEmulator();
+
+
+    welcome.style.display = "none";
+
+
+    dosbox.innerHTML = "";
+
+
+    try {
+
+        /*
+         * js-dos expects a DOSBox bundle.
+         *
+         * If the game folder contains a
+         * game.jsdos bundle, use it.
+         */
+
+        const bundleURL =
+            gameURL + "game.jsdos";
+
+
+        emulator =
+            await Dos(dosbox)
+                .run(bundleURL);
+
+
+        setStatus(
+            "Running " + game.name,
+            "running"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Game error:",
+            error
+        );
+
+
+        /*
+         * Fallback message.
+         */
+
+        setStatus(
+            "Game could not be started.",
+            "warning"
+        );
+
+
+        alert(
+
+            "Could not start " +
+            game.name +
+            ".\n\n" +
+
+            "Make sure the game folder contains:\n\n" +
+
+            game.folder +
+            "/game.jsdos\n\n" +
+
+            "The game.jsdos bundle should " +
+            "contain the DOS game files and " +
+            "its DOSBox startup configuration."
+
+        );
+
+    }
+
+}
+
+
+/*
+================================================================
+ WINDOWS 3.1
+================================================================
+
+ Windows 3.1 is started through a js-dos bundle.
+
+ Put:
+
+     windows31/windows.jsdos
+
+ inside your repository.
+
+================================================================
+*/
+
+
+async function startWindows() {
+
+    setStatus(
+        "Starting Windows 3.1...",
+        "warning"
+    );
+
+
+    await stopEmulator();
+
+
+    welcome.style.display = "none";
+
+
+    dosbox.innerHTML = "";
+
+
+    try {
+
+        const windowsURL =
+            CONFIG.BASE_URL +
+            CONFIG.WINDOWS_FOLDER +
+            "windows.jsdos";
+
+
+        emulator =
+            await Dos(dosbox)
+                .run(windowsURL);
+
+
+        setStatus(
+            "Windows 3.1 running.",
+            "running"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Windows 3.1:",
+            error
+        );
+
+
+        setStatus(
+            "Windows 3.1 could not start.",
+            "warning"
+        );
+
+
+        alert(
+
+            "Windows 3.1 could not start.\n\n" +
+
+            "Make sure this exists:\n\n" +
+
+            "windows31/windows.jsdos"
+
+        );
+
+    }
+
+}
+
+
+/*
+================================================================
+ STOP BUTTON
+================================================================
+*/
+
+
+document
+    .getElementById("stop")
+    .addEventListener(
+        "click",
+        async () => {
+
+            await stopEmulator();
+
+
+            welcome.style.display =
+                "flex";
+
+
+            setStatus(
+                "Stopped."
+            );
+
+        }
+    );
+
+
+/*
+================================================================
+ RESTART BUTTON
+================================================================
+*/
+
+
+document
+    .getElementById("restart")
+    .addEventListener(
+        "click",
+        async () => {
+
+            /*
+             * Restart the whole page.
+             */
+
+            location.reload();
+
+        }
+    );
+
+
+/*
+================================================================
+ FULLSCREEN
+================================================================
+*/
+
+
+document
+    .getElementById("fullscreen")
+    .addEventListener(
+        "click",
+        async () => {
+
+            const element =
+                document.querySelector(
+                    ".emulator"
+                );
+
+
+            try {
+
+                if (
+                    !document.fullscreenElement
+                ) {
+
+                    await element.requestFullscreen();
+
+                } else {
+
+                    await document.exitFullscreen();
+
+                }
+
+            } catch (error) {
+
+                console.log(
+                    "Fullscreen:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+/*
+================================================================
+ BUTTONS
+================================================================
+*/
+
+
+document
+    .getElementById("startDos")
+    .addEventListener(
+        "click",
+        startDOS
+    );
+
+
+document
+    .getElementById("startWindows")
+    .addEventListener(
+        "click",
+        startWindows
+    );
+
+
+/*
+================================================================
+ INITIALIZE
+================================================================
+*/
+
+
+buildGameList();
+
+
+setStatus(
+    "Waiting for program..."
+);
+
+</script>
+
+</body>
+</html>
+```
